@@ -1,31 +1,13 @@
 import express, { NextFunction, Request, Response } from "express";
+import { TodoBody, TodoReqQuery, Todos, todoSchema } from "../types/types";
+import { validate } from "../middlewares/validate";
 
-type Todos = {
-  id: number;
-  title: string;
-  completed: boolean;
-};
-
+//初期データ
 const todos: Todos[] = [
   { id: 1, title: "ネーム", completed: false },
   { id: 2, title: "下書き", completed: true },
 ];
 
-type TodoReqQuery = {
-  completed?: "true" | "false";
-};
-
-type TodoBody = { title: string };
-
-// カスタムエラー型
-class HttpError extends Error {
-  statusCode: number;
-
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-  }
-}
 export const expressServer = (port: number) => {
   const app = express();
   app.use(express.json());
@@ -63,17 +45,21 @@ export const expressServer = (port: number) => {
   // データの追加;
   app.post(
     "/",
-    (req: Request<{}, {}, TodoBody, {}>, res: Response, next: NextFunction) => {
+    validate(todoSchema),
+    (
+      req: Request<
+        {}, // Params:
+        {}, // ResBody:
+        TodoBody, // ReqBody:
+        {} // ReqQuery: クエリパラメータ
+      >,
+      res: Response,
+      next: NextFunction
+    ) => {
       const { title } = req.body;
 
-      // titleがリクエストに含まれない場合はステータスコード400（Bad Request）
-      if (typeof title !== "string" || !title) {
-        const err = new HttpError("title is required", 400);
-        return err;
-      }
-
       // todoの作成
-      const todo: Todos = { id: maxId + 1, title, completed: false };
+      const todo: Todos = { id: (maxId += 1), title, completed: false };
       todos.push(todo);
       return res.status(201).json(todo);
     }
