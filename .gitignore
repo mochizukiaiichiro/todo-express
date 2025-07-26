@@ -1,3 +1,5 @@
 # dependencies
 /node_modules
-環境構築.txt
+
+# next.js
+/.next/
