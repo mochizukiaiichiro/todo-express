@@ -1,3 +1,3 @@
-import { expressServer } from "./server/expressServer.js";
+import { expressServer } from "./server/expressServer";
 
-expressServer(3000);
+expressServer();

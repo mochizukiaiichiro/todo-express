@@ -1,5 +1,11 @@
-# dependencies
-/node_modules
-
-# next.js
-/.next/
+node_modules/
+dist/
+build/
+.next/
+coverage/
+.env
+.env.local
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
