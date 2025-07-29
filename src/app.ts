@@ -1,6 +1,6 @@
 import express from "express";
 import next from "next";
-import todosRouter from "./api/routes/todos";
+import todosRouter from "./api/routes/todosRouter";
 import { errorHandler } from "./api/middlewares/errorHandler";
 
 const dev = process.env.NODE_ENV !== "production";

@@ -1,3 +1,5 @@
+import { Request } from "express";
+
 import z from "zod";
 
 export type Todos = {
@@ -16,3 +18,11 @@ export const todoSchema = z.object({
 });
 
 export type TodoBody = z.infer<typeof todoSchema>;
+
+// isTodoHandlerミドルウェアのRequest
+export type isTodoHandlerRequest = Request<{ id: string }, {}, {}, {}> & {
+  todoIndex?: number;
+};
+
+// isTodoHandlerのnextを受けるAPIのRequest
+export type isTodoHandlingRequest = Request & { todoIndex?: number };

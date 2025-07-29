@@ -1,7 +1,9 @@
+import Todos from "../components/Todos"
+
 export default function Page() {
     return (
         <>
-            <h1>Hello, Next.js!</h1>
+            <Todos page="index"/>
         </>
     )
 }
