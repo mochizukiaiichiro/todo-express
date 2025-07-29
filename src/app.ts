@@ -1,6 +1,7 @@
 import express from "express";
 import next from "next";
 import todosRouter from "./api/routes/todos";
+import { errorHandler } from "./api/middlewares/errorHandler";
 
 const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
@@ -16,6 +17,9 @@ nextApp.prepare().then(() => {
   // Next.jsのページ
   app.use((req, res) => handle(req, res));
 
+  // エラーハンドリングミドルウェア
+  app.use(errorHandler);
+  
   const PORT = parseInt(process.env.PORT || "3000", 10);
   app.listen(PORT, () => {
     console.log(`🚀 Server ready at http://localhost:${PORT}`);
