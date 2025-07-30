@@ -1,5 +1,10 @@
 import { Router } from "express";
-import { getTodos, addTodo, deleteTodo } from "../controllers/todosApi";
+import {
+  getTodos,
+  addTodo,
+  updateTodo,
+  deleteTodo,
+} from "../controllers/todosApi";
 import { todoSchema } from "../../types/types";
 import { validate } from "../middlewares/validate";
 import { isTodoHandler } from "../middlewares/isTodoHandler";
@@ -13,8 +18,9 @@ router.get("/", getTodos);
 
 // データを追加する;
 router.post("/", validate(todoSchema), addTodo);
-// router.put("/:id/completed")                     // 指定IDのcompletedをtrueに更新
-// router.delete("/:id/completed");                 // 指定IDのcompletedをfalseに更新
+
+// 指定IDのcompletedの更新
+router.put("/:id/completed", updateTodo);
 
 // 指定IDのデータを削除する。
 router.delete("/:id", deleteTodo);

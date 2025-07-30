@@ -35,8 +35,15 @@ export const addTodo = (
   res.status(201).json(todo);
 };
 
-// 指定IDのcompletedをtrueに更新
-// 指定IDのcompletedをfalseに更新
+// 指定IDのcompletedの更新
+export const updateTodo = (req: isTodoHandlingRequest, res: Response) => {
+  if (typeof req.todoIndex === "number") {
+    todosData[req.todoIndex]!.completed = !todosData[req.todoIndex]!.completed;
+    return res.status(200).json(todosData);
+  } else {
+    return res.status(500).json({ message: "UPDATE error" });
+  }
+};
 
 // 指定IDのデータの削除
 export const deleteTodo = (req: isTodoHandlingRequest, res: Response) => {

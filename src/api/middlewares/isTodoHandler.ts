@@ -10,7 +10,6 @@ export const isTodoHandler = (
 ) => {
   const id = parseInt(req.params.id);
   const index = todosData.findIndex((todo) => todo.id === id);
-  console.log("index:", index);
 
   if (index !== -1) {
     req.todoIndex = index;
