@@ -4,7 +4,7 @@ import {
   isTodoHandlingRequest,
   TodoBody,
   TodoReqQuery,
-  Todos,
+  TodosType,
 } from "../../types/types";
 
 //一覧、true、falseデータの取得
@@ -30,7 +30,7 @@ export const addTodo = (
 ) => {
   const { title } = req.body;
   // データの追加;
-  const todo: Todos = { id: getMaxId() + 1, title, completed: false };
+  const todo: TodosType = { id: getMaxId() + 1, title, completed: false };
   todosData.push(todo);
   res.status(201).json(todo);
 };

@@ -2,7 +2,7 @@ import { Request } from "express";
 
 import z from "zod";
 
-export type Todos = {
+export type TodosType = {
   id: number;
   title: string;
   completed: boolean;
