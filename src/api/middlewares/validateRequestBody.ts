@@ -1,7 +1,9 @@
 import { ZodType } from "zod";
 import { Request, Response, NextFunction } from "express";
+import { TodoBody } from "../../types/types";
 
-export const validate =
+// Zodスキーマに基づいたリクエストボディの検証
+export const validateRequestBody =
   (schema: ZodType) => (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body); //結果を success: boolean で取得
 
@@ -11,6 +13,6 @@ export const validate =
     }
 
     // バリデーション済みデータを req に格納（オプション）
-    req.body = result.data;
+    req.body = result.data as TodoBody;
     return next();
   };

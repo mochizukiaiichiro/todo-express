@@ -1,9 +1,9 @@
-import Todos from "../components/Todos"
+import TodoPage from "../components/Todos"
 
 export default function Page() {
     return (
         <>
-            <Todos page="index"/>
+            <TodoPage page="index"/>
         </>
     )
 }

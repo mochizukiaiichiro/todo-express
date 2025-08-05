@@ -4,7 +4,7 @@ import {
   isTodoHandlingRequest,
   TodoBody,
   TodoReqQuery,
-  TodosType,
+  Todos,
 } from "../../types/types";
 
 //一覧、true、falseデータの取得
@@ -18,7 +18,7 @@ export const getTodos = (
   if (!completed) {
     return res.json(todosData);
   }
-  // http://localhost:3000/?completed=false,falseの場合
+  // http://localhost:3000/?completed=true or falseの場合
   const isCompleted = completed === "true";
   return res.json(todosData.filter((todo) => todo.completed === isCompleted));
 };
@@ -30,27 +30,27 @@ export const addTodo = (
 ) => {
   const { title } = req.body;
   // データの追加;
-  const todo: TodosType = { id: getMaxId() + 1, title, completed: false };
+  const todo: Todos = { id: String(getMaxId() + 1), title, completed: false };
   todosData.push(todo);
   res.status(201).json(todo);
 };
 
 // 指定IDのcompletedの更新
 export const updateTodo = (req: isTodoHandlingRequest, res: Response) => {
-  if (typeof req.todoIndex === "number") {
-    todosData[req.todoIndex]!.completed = !todosData[req.todoIndex]!.completed;
+  const index = todosData.findIndex((todo) => todo.id === req.todo?.id);
+  if (index !== -1) {
+    todosData[index]!.completed = !todosData[index]!.completed;
     return res.status(200).json(todosData);
-  } else {
-    return res.status(500).json({ message: "UPDATE error" });
   }
+  return res.status(404).json({ message: "ToDo not found" });
 };
 
 // 指定IDのデータの削除
 export const deleteTodo = (req: isTodoHandlingRequest, res: Response) => {
-  if (typeof req.todoIndex === "number") {
-    todosData.splice(req.todoIndex, 1);
+  const index = todosData.findIndex((todo) => todo.id === req.todo?.id);
+  if (index !== -1) {
+    todosData.splice(index, 1);
     return res.status(200).json(todosData);
-  } else {
-    return res.status(500).json({ message: "DELETE error" });
   }
+  return res.status(404).json({ message: "ToDo not found" });
 };

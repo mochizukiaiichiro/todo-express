@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { TodosType } from '../types/types';
+import { Todos } from '../types/types';
 
 type Page = "index" | "active" | "completed";
 type Pages = Record<Page, { title: string, fetchQuery: string }>
@@ -22,11 +22,11 @@ const pageLinks = Object.entries(pages).map(([page, info], index) =>
 )
 
 // Reactコンポーネントを実装し、外部のモジュールで利用可能なようexport文で公開
-export default function Todos(props: Props) {
+export default function TodoPage(props: Props) {
     const { title, fetchQuery } = pages[props.page]
 
     // コンポーネントの状態の初期化と、propsの値に応じた更新
-    const [todos, setTodos] = useState<TodosType[]>([])
+    const [todos, setTodos] = useState<Todos[]>([])
     useEffect(() => {
         fetchTodos();
     }, [props.page, fetchQuery]);
@@ -51,7 +51,7 @@ export default function Todos(props: Props) {
 
     // データの登録
     const addTodo = async (title: string) => {
-        const res = await fetch("http://localhost:3000/api/todos", {
+        const res = await fetch("/api/todos", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -62,16 +62,16 @@ export default function Todos(props: Props) {
     }
 
     // completed更新
-    const onChangeCheckbox = async (id: number) => {
-        const res = await fetch(`http://localhost:3000/api/todos/${id}/completed`, {
+    const onChangeCheckbox = async (id: string) => {
+        const res = await fetch(`/api/todos/${id}/completed`, {
             method: "PUT",
         });
         handlePostFetch(res);
     };
 
     // データ削除
-    const onClickDeleteButton = async (id: number) => {
-        const res = await fetch(`http://localhost:3000/api/todos/${id}`, {
+    const onClickDeleteButton = async (id: string) => {
+        const res = await fetch(`/api/todos/${id}`, {
             method: "DELETE",
         });
         handlePostFetch(res);
