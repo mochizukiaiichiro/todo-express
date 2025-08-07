@@ -1,0 +1,14 @@
+.todoItem {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.2s ease;
+}
+
+.todoItem:hover {
+  background-color: #f9f9f9;
+}
+
+.completed {
+  text-decoration: line-through;
+  color: #aaa;
+}

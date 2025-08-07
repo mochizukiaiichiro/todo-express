@@ -1,4 +1,4 @@
-import Todos from "../../../components/Todos"
+import Todos from "../../../components/TodoPage"
 
 export default function Page() {
     return (

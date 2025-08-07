@@ -1,6 +1,6 @@
 # 概要
 
-Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のために作成したアプリケーションです。『[ハンズオンNode.js](https://www.oreilly.co.jp/books/9784873119236/)』の[ToDo管理アプリケーション](https://github.com/oreilly-japan/hands-on-nodejs/tree/master/ch05)を元に機能の追加や改善、技術の最新化、モジュール構成の最適化などを行っています。<br>
+Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のために作成したアプリケーションです。『[ハンズオンNode.js](https://www.oreilly.co.jp/books/9784873119236/)』の[ToDo管理アプリケーション](https://github.com/oreilly-japan/hands-on-nodejs/tree/master/ch05)を元に機能の追加や改善、技術の最新化、モジュール構成の最適化などを行っています。
 
 ---
 ## 「ハンズオンNode.js」からの変更点
@@ -24,13 +24,16 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 
 ```text       
 /src
-├ app.ts                 # Express + Next.js 統合エントリポイント
-├── app/               # Next.jsページ群（App Router）
-├── components/        # UIコンポーネント
-├── types/             # TypeScript型定義 & Zodスキーマ
+├ app.ts                  # Express + Next.js 統合エントリポイント
+├── app/                # Next.jsページ群（App Router）
+├── components/         # UIコンポーネント
+├── hooks/              # カスタムフック
+├── styles/             # CSS
+├── types/              # TypeScript型定義 & Zodスキーマ
 └── api/
       ├── routes/       # Expressルート定義
       ├── controllers/  # APIの実装ロジック
+      ├── services/     # CRUD処理
       ├── middlewares/  # バリデーション・エラー処理
       └── data/         # ToDo管理アプリケーションのデータ
 ```

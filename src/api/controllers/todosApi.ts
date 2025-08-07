@@ -3,7 +3,7 @@ import {
   isTodoHandlingRequest,
   TodoBody,
   TodoReqQuery,
-  Todos,
+  Todo,
 } from "../../types/types";
 import { TodoDbService } from "../services/todoDbService";
 
@@ -13,7 +13,7 @@ const db = new TodoDbService("src/api/data/todo-express-db.sqlite3");
 export const getTodos = (
   req: Request<{}, {}, {}, TodoReqQuery>, // Request<Params, ResBody, ReqBody, ReqQuery>
   res: Response
-): Response<Todos[]> => {
+): Response<Todo[]> => {
   const { completed } = req.query;
 
   // "/"の場合
@@ -30,8 +30,8 @@ export const addTodo = (
   req: Request<{}, {}, TodoBody, {}>, // Request<Params, ResBody, ReqBody, ReqQuery>
   res: Response
 ): Response<{ message: string }> => {
-  const { title } = req.body;
-  db.insert(title);
+  const { todoName } = req.body;
+  db.insert(todoName);
   return res.status(201).json({ message: "Todo created" });
 };
 

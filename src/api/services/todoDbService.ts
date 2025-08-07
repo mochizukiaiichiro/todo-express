@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import { Todos } from "../../types/types";
+import { Todo } from "../../types/types";
 
 export class TodoDbService {
   private db: InstanceType<typeof Database>;
@@ -14,7 +14,7 @@ export class TodoDbService {
     this.db.exec(`
         CREATE TABLE  IF NOT EXISTS todos (
             id TEXT PRIMARY KEY, 
-            title TEXT, 
+            todoName TEXT, 
             completed INTEGER -- 0 = false/未完了, 1 = true/完了
         );
     `);
@@ -22,13 +22,13 @@ export class TodoDbService {
 
   /**
    * ToDoデータをDBに挿入する
-   * @param title - タイトル
+   * @param todoName - todo名
    */
-  insert(title: string) {
+  insert(todoName: string) {
     const stmt = this.db.prepare(
-      "INSERT INTO todos (id,title,completed) VALUES (?,?,?)"
+      "INSERT INTO todos (id,todoName,completed) VALUES (?,?,?)"
     );
-    stmt.run(uuidv4(), title, 0);
+    stmt.run(uuidv4(), todoName, 0);
   }
 
   /**
@@ -44,7 +44,7 @@ export class TodoDbService {
    * ToDoデータを更新する
    * @param todo - ToDoオブジェクト
    */
-  update(todo: Todos) {
+  update(todo: Todo) {
     const stmt = this.db.prepare(`UPDATE todos SET completed = ? WHERE id = ?`);
     stmt.run(+!todo.completed, todo.id);
   }
@@ -53,27 +53,25 @@ export class TodoDbService {
    * ToDoデータを全件取得する
    * @returns - ToDoオブジェクト配列
    */
-  getAll(): Todos[] {
-    return this.db.prepare("SELECT * FROM todos").all() as Todos[];
+  getAll(): Todo[] {
+    return this.db.prepare("SELECT * FROM todos").all() as Todo[];
   }
 
   /**
    * 指定したcompletedのToDoデータを取得する
    * @returns - 指定したcompletedのToDoオブジェクト配列
    */
-  getCompleted(completed: boolean): Todos[] {
+  getCompleted(completed: boolean): Todo[] {
     return this.db
       .prepare("SELECT * FROM todos WHERE completed = ?")
-      .all(+completed) as Todos[];
+      .all(+completed) as Todo[];
   }
 
   /**
    * 指定したidのToDoデータを取得する
    * @returns - 指定したidのToDoオブジェクト配列
    */
-  getId(id: string): Todos {
-    return this.db
-      .prepare("SELECT * FROM todos WHERE id = ?")
-      .get(id) as Todos;
+  getId(id: string): Todo {
+    return this.db.prepare("SELECT * FROM todos WHERE id = ?").get(id) as Todo;
   }
 }
