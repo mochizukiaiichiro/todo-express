@@ -2,23 +2,30 @@ import { useState } from "react";
 import { Todo } from "../types/types";
 
 /**
- * @module useFetchUtils
- * @description データ取得処理
- * @param fetchQuery:APIパス
- * @returns todos, setTodos, fetchTodos
+ * ToDoデータの取得・操作を提供するカスタムフック
+ * @param fetchQuery - APIクエリ文字列（例: "?completed=true"）
+ * @returns ToDo一覧と操作関数群
  */
 export const useFetchUtils = (fetchQuery: string) => {
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  // データ取得処理
-  const fetchTodos =  
-    async () => {
+  /**
+   * ToDo一覧をAPIから取得し、状態に反映する
+   * @async
+   * @returns void
+   */
+  const fetchTodos = async () => {
     fetch(`/api/todos${fetchQuery}`).then(async (res) =>
       res.ok ? setTodos(await res.json()) : alert(await res.text())
     );
   };
 
-  // データ取得実行-共通処理
+  /**
+   * APIレスポンスに応じてfetchTodosを実行する共通処理
+   * @param res - APIレスポンス
+   * @async
+   * @returns void
+   */
   const handlePostFetch = async (res: Response) => {
     if (res.ok) {
       await fetchTodos();
@@ -27,7 +34,12 @@ export const useFetchUtils = (fetchQuery: string) => {
     }
   };
 
-  // todoの登録
+  /**
+   * 新しいToDoをAPIに登録する
+   * @param todoName - 登録するToDoの名前
+   * @async
+   * @returns void
+   */
   const addTodo = async (todoName: string) => {
     const res = await fetch("/api/todos", {
       method: "POST",
@@ -39,7 +51,12 @@ export const useFetchUtils = (fetchQuery: string) => {
     handlePostFetch(res);
   };
 
-  // completed更新
+  /**
+   * 指定したToDoのcompleted状態を更新する
+   * @param id - 更新対象のToDo ID
+   * @async
+   * @returns void
+   */
   const onChangeCheckbox = async (id: string) => {
     const res = await fetch(`/api/todos/${id}/completed`, {
       method: "PUT",
@@ -47,7 +64,12 @@ export const useFetchUtils = (fetchQuery: string) => {
     handlePostFetch(res);
   };
 
-  // todo削除
+  /**
+   * 指定したToDoを削除する
+   * @param id - 削除対象のToDo ID
+   * @async
+   * @returns void
+   */
   const onClickDeleteButton = async (id: string) => {
     const res = await fetch(`/api/todos/${id}`, {
       method: "DELETE",

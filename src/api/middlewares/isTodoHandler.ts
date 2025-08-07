@@ -4,7 +4,15 @@ import { TodoDbService } from "../services/todoDbService";
 
 const db = new TodoDbService("src/api/data/todo-express-db.sqlite3");
 
-// 指定IDのToDoの存在を検証する。
+/**
+ * 指定されたIDのToDoが存在するかを検証するミドルウェア
+ * - 存在しない場合は 404 を返す
+ * - 存在する場合は req.todo に格納して次の処理へ
+ * @param req - 拡張されたExpressリクエスト（params.id を含む）
+ * @param res - Expressレスポンスオブジェクト
+ * @param next - 次のミドルウェア関数
+ * @returns ToDoが存在しない場合は404レスポンス、存在する場合は next() を呼び出す
+ */
 export const isTodoHandler = (
   req: isTodoHandlerRequest,
   res: Response,

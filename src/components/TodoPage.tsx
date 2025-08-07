@@ -5,25 +5,41 @@ import HeadMeta from './HeadMeta';
 import TodoInput from './TodoInput';
 import TodoList from './TodoList';
 import PageLinks, { pages } from "./PageLinks"
+import styles from "../styles/TodoPage.module.css"
 
-// Reactコンポーネントを実装し、外部のモジュールで利用可能なようexport文で公開
+/**
+ * ToDo管理アプリケーションのメインページコンポーネント
+ * - ページに応じたToDo一覧を表示
+ * - 入力・削除・完了切り替え機能を提供
+ * @param props - ページ情報（pageキー）
+ * @returns JSXページ構成
+ */
 export default function TodoPage(props: Props) {
     const { title } = pages[props.page]
     const { todos, addTodo, onChangeCheckbox, onClickDeleteButton } = useInitialize(props);
-(id: string) => Promise<void>
+    (id: string) => Promise<void>
     return (
-        <>
-            <HeadMeta title={title}/>
-            <h1>{title}</h1>
+        <div className={styles.page}>
+            <HeadMeta title={title} />
+            <h1 className={styles.title}>ToDo管理アプリケーション</h1>
+
             {/* Todoの入力 */}
-            <TodoInput addTodo={addTodo} />
-            {/* ToDo一覧の表示 */}
-            <TodoList
-                todos={todos}
-                onChangeCheckbox={onChangeCheckbox}
-                onClickDeleteButton={onClickDeleteButton} />
+            <div className={styles.section}>
+                <TodoInput addTodo={addTodo} />
+            </div>
+
             {/* ページリンクの表示 */}
-            <PageLinks />
-        </>
+            <div className={styles.section}>
+                <PageLinks currentPage={props.page} />
+            </div>
+
+            {/* ToDo一覧の表示 */}
+            <div className={styles.section}>
+                <TodoList
+                    todos={todos}
+                    onChangeCheckbox={onChangeCheckbox}
+                    onClickDeleteButton={onClickDeleteButton} />
+            </div>
+        </div>
     )
 }

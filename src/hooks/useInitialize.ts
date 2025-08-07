@@ -4,9 +4,10 @@ import { useFetchUtils } from "./useFetchUtils";
 import { pages } from "../components/PageLinks";
 
 /**
- * @module useInitialize
- * @description コンポーネントの初期化
- * @param ページ名
+ * ページに応じた初期化処理を行うカスタムフック
+ * - 初回レンダリング時にToDo一覧を取得
+ * @param props - ページ情報（page名を含む）
+ * @returns useFetchUtilsの返却値（todos, 操作関数群）
  */
 export const useInitialize = (props: Props) => {
   const { fetchQuery } = pages[props.page];

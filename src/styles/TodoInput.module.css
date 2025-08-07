@@ -1,0 +1,40 @@
+.container {
+  border: solid 1px #aaa;
+  border-radius: 20px;
+  padding: 8px;
+  margin: 8px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 12px;
+  background-color: #f9f9f9;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+}
+
+.input {
+  flex: 1;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.button {
+  padding: 6px 12px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: #005bb5;
+}
