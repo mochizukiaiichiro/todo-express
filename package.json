@@ -6,7 +6,7 @@
     "start": "npx tsc --noEmit && npx tsx ./src/app.ts",
     "check": "npx tsc --noEmit",
     "watch": "npx tsx watch ./src/app.ts",
-    "test": ".",
+    "test": "jest",
     "stop": ".",
     "restart": "."
   },
@@ -18,10 +18,13 @@
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.3",
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.1.0",
     "@types/react": "19.1.8",
+    "jest": "^30.0.5",
+    "ts-jest": "^29.4.1",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.2"
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",

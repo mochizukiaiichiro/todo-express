@@ -1,6 +1,7 @@
 import Database from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import { Todo } from "../../types/types";
+import { Todo, TodoRow } from "../../types/types";
+import isTodoRow from "./isTodoRow";
 
 /**
  * SQLite3 を用いた ToDo データの永続化サービス
@@ -30,71 +31,129 @@ export class TodoDbService {
         CREATE TABLE  IF NOT EXISTS todos (
             id TEXT PRIMARY KEY, 
             todoName TEXT, 
-            completed INTEGER -- 0 = false/未完了, 1 = true/完了
+            completed INTEGER NOT NULL CHECK (completed IN (0,1)), -- 0 = false, 1 = true
+            created_at INTEGER NOT NULL DEFAULT (unixepoch())
         );
     `);
   }
 
   /**
-   * 新しい ToDo をデータベースに挿入する
-   * @param todoName - 作成する ToDo の名前
+   * データベース接続を閉じます。
+   * @throws {Error} 接続のクローズ処理中にエラーが発生した場合
+   */
+  close() {
+    this.db.close();
+  }
+
+  /**
+   * TODO を1件挿入し、生成した ID と変更件数を返します。
+   *
+   * - UUID で一意な ID を生成し、todos テーブルに INSERT します。
+   * - completed は常に false（0）で初期化します。
+   *
+   * @param {string} todoName - 登録する TODO の名称。
+   * @returns {{ id: string, changes: number }} 生成した ID と、変更件数（通常は 1）。
+   * @throws {Error} データベース操作（prepare/run）が失敗した場合にスローされます。
    */
   insert(todoName: string) {
-    const stmt = this.db.prepare(
-      "INSERT INTO todos (id,todoName,completed) VALUES (?,?,?)"
-    );
-    stmt.run(uuidv4(), todoName, 0);
+    const id = uuidv4();
+    const completed = false;
+    const res = this.db
+      .prepare("INSERT INTO todos (id,todoName,completed) VALUES (?,?,?)")
+      .run(id, todoName, Number(completed)); //Number(completed) true → 1, false → 0
+
+    return { id, changes: res.changes };
   }
 
   /**
-   * 指定された ID の ToDo をデータベースから削除する
-   * @param id - 削除対象の ToDo の ID
+   * 指定されたIDのToDoをデータベースから削除します。
+   *
+   * @param {string} id - 削除対象のToDoのID
+   * @returns {number} 削除によって変更された行数（削除成功時は通常1、該当レコードなしの場合は0）
+   *
+   * @throws {Error} データベース操作中にエラーが発生した場合
    */
   delete(id: string) {
-    const stmt = this.db.prepare(`DELETE FROM todos WHERE id = ?`);
-    stmt.run(id);
+    return this.db.prepare(`DELETE FROM todos WHERE id = ?`).run(id).changes;
   }
 
   /**
-   * 指定された ToDo の completed 状態を反転して更新する
-   * @param todo - 更新対象の ToDo オブジェクト
+   * 指定された Todo の完了状態を反転し、データベースに保存します。
+   *
+   * @param {Todo} todo - 更新対象の Todo オブジェクト。
+   *   - `id` は既存レコードの ID である必要があります。
+   *   - `completed` は現在の完了状態。更新時にこの値が反転されます。
+   *
+   * @returns {number} 更新されたレコード数。
+   *   - 通常は 1（更新成功）または 0（該当レコードなし）。
+   *
+   * @throws {Error} データベース更新処理に失敗した場合。
    */
   update(todo: Todo) {
-    const stmt = this.db.prepare(`UPDATE todos SET completed = ? WHERE id = ?`);
-    stmt.run(+!todo.completed, todo.id);
+    const res = this.db
+      .prepare(`UPDATE todos SET completed = ? WHERE id = ?`)
+      .run(Number(!todo.completed), todo.id);
+
+    return res.changes;
   }
 
   /**
-   * 全ての ToDo を取得する
-   * @returns ToDo オブジェクトの配列
+   * すべてのToDo項目を取得します。
+   *
+   * `todos` テーブルから全レコードを取得し、
+   * `completed` フィールド（数値 0/1）を boolean 型に変換して返します。
+   *
+   * @returns {Todo[]} 変換済みの全ToDoデータ配列
+   *
+   * @throws {Error} データベース操作中にエラーが発生した場合
    */
   getAll(): Todo[] {
-    return this.db.prepare("SELECT * FROM todos").all() as Todo[];
+    const rows = this.db.prepare("SELECT * FROM todos").all() as Array<TodoRow>;
+
+    return rows.map((r) => ({
+      ...r,
+      completed: Boolean(r.completed),
+    })) as Todo[];
   }
 
   /**
-   * 指定された completed 状態の ToDo を取得する
-   * @param completed - 完了状態（true: 完了, false: 未完了）
-   * @returns 条件に一致する ToDo オブジェクトの配列
+   * 指定された完了状態（`completed`）に一致する Todo を取得します。
+   *
+   * @param {boolean} completed - 取得対象とする完了状態。
+   *   - `true` の場合: 完了済みの Todo を取得
+   *   - `false` の場合: 未完了の Todo を取得
+   * @returns {Todo[]} 完了状態を変換済み（数値→真偽値）の Todo オブジェクト配列。
+   *
+   *  * @remarks
+   * - DBの `completed` カラムは数値(0/1)で保持されるため、返却時に boolean に変換しています。
    */
   getCompleted(completed: boolean): Todo[] {
-    return this.db
+    const rows = this.db
       .prepare("SELECT * FROM todos WHERE completed = ?")
-      .all(+completed) as Todo[];
+      .all(Number(completed)) as Array<TodoRow>; //Number(completed) true → 1, false → 0
+
+    return rows.map((r) => ({
+      ...r,
+      completed: Boolean(r.completed),
+    })) as Todo[];
   }
 
   /**
-   * 指定された ID の ToDo を取得する
-   * @param id - 検索対象の ToDo の ID
-   * @returns 該当する ToDo オブジェクト（存在しない場合は undefined）
+   * 指定IDの Todo を取得する。
+   *
+   * @param {string} id - 検索対象の Todo ID
+   * @returns {Todo|undefined} 該当する Todo。存在しない場合は undefined を返す。
    */
   getId(id: string): Todo | undefined {
-  const result = this.db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
+    const result = this.db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
 
-  // 型ガードで result が Todo 型か確認
-  if (result && typeof result === "object" && "id" in result) {
-    return result as Todo;
-  }
+    // 型ガードで result が Todo 型か確認
+    if (isTodoRow(result)) {
+      return {
+        ...result,
+        completed: Boolean(result.completed),
+      };
+    }
 
     return undefined;
   }

@@ -6,6 +6,14 @@ export type Todo = {
   id: string;
   todoName: string;
   completed: boolean;
+  created_at: number;
+};
+
+export type TodoRow = {
+  id: string;
+  todoName: string;
+  completed: number;
+  created_at: number;
 };
 
 export type TodoReqQuery = {
