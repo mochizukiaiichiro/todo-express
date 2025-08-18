@@ -39,3 +39,27 @@ export type isTodoHandlingRequest = Request & { todo?: Todo };
 export type Page = "index" | "active" | "completed";
 export type Pages = Record<Page, { title: string; fetchQuery: string }>;
 export type Props = { page: Page };
+
+// todoDbService
+export type TodoDbService = {
+  /** DB接続を閉じる */
+  close: () => void;
+
+  /** 新しいToDoを追加する */
+  insert: (todoName: string) => { id: string; changes: number };
+
+  /** 指定IDのToDoを削除する */
+  remove: (id: string) => number;
+
+  /** 指定ToDoのcompleted状態を反転する */
+  update: (todo: Todo) => number;
+
+  /** 全ToDoを取得する */
+  getAll: () => Todo[];
+
+  /** completed状態で絞り込んで取得する */
+  getCompleted: (completed: boolean) => Todo[];
+
+  /** 指定IDのToDoを取得する（存在しない場合はundefined） */
+  getId: (id: string) => Todo | undefined;
+};

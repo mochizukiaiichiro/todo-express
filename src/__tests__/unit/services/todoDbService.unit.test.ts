@@ -1,12 +1,12 @@
 import isTodoRow from "../../../api/services/isTodoRow";
-import { TodoDbService } from "../../../api/services/todoDbService";
-import { Todo } from "../../../types/types";
+import { todoDbService } from "../../../api/services/todoDbService";
+import { Todo, TodoDbService } from "../../../types/types";
 
 describe("todoDbService", () => {
   let dbs: TodoDbService;
 
   beforeEach(() => {
-    dbs = new TodoDbService(":memory:"); // テストごとにインメモリDBを生成
+    dbs = todoDbService(); // テストごとにインメモリDBを生成
   });
 
   afterEach(() => {
@@ -107,7 +107,7 @@ describe("todoDbService", () => {
     test("既存のTodoを削除し、リストが空になることを確認する", () => {
       // --- 実行 ---
       const { id } = dbs.insert("test1"); // ToDoを１件追加
-      const changes = dbs.delete(id); // Todoを削除
+      const changes = dbs.remove(id); // Todoを削除
 
       // --- 検証 ---
       expect(changes).toBe(1);
@@ -122,7 +122,7 @@ describe("todoDbService", () => {
       // --- 実行 ---
       const { id: id1 } = dbs.insert("test1");
       const { id: id2 } = dbs.insert("test2");
-      dbs.delete(id1);
+      dbs.remove(id1);
 
       // --- 検証 ---
       expect(dbs.getAll()).toEqual([
@@ -140,7 +140,7 @@ describe("todoDbService", () => {
       const before = dbs.getAll();
 
       // --- 実行 ---
-      const changes = dbs.delete("non-existent-id"); // Todoを削除
+      const changes = dbs.remove("non-existent-id"); // Todoを削除
 
       // --- 検証 ---
       expect(changes).toBe(0);

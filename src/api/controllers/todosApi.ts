@@ -5,9 +5,9 @@ import {
   TodoReqQuery,
   Todo,
 } from "../../types/types";
-import { TodoDbService } from "../services/todoDbService";
+import { todoDbService } from "../services/todoDbService";
 
-const db = new TodoDbService("src/api/data/todo-express-db.sqlite3");
+const db = todoDbService("src/api/services/todo-express-db.sqlite3");
 
 /**
  * ToDo一覧を取得するAPIハンドラー
@@ -74,6 +74,6 @@ export const deleteTodo = (
   req: isTodoHandlingRequest,
   res: Response
 ): Response<{ message: string }> => {
-  db.delete(req.todo!.id);
+  db.remove(req.todo!.id);
   return res.status(200).json({ message: "Todo delete" });
 };

@@ -1,8 +1,8 @@
 import { Response, NextFunction } from "express";
 import { isTodoHandlerRequest, Todo } from "../../types/types";
-import { TodoDbService } from "../services/todoDbService";
+import { todoDbService } from "../services/todoDbService";
 
-const db = new TodoDbService("src/api/data/todo-express-db.sqlite3");
+const db = todoDbService("src/api/services/todo-express-db.sqlite3");
 
 /**
  * 指定されたIDのToDoが存在するかを検証するミドルウェア
