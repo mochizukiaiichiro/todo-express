@@ -1,12 +1,12 @@
 import isTodoRow from "../../../api/services/isTodoRow";
-import { todoDbService } from "../../../api/services/todoDbService";
-import { Todo, TodoDbService } from "../../../types/types";
+import { createTodoDbService } from "../../../api/services/createTodoDbService";
+import { Todo, TodoRepository } from "../../../types/types";
 
 describe("todoDbService", () => {
-  let dbs: TodoDbService;
+  let dbs: TodoRepository;
 
   beforeEach(() => {
-    dbs = todoDbService(); // テストごとにインメモリDBを生成
+    dbs = createTodoDbService(); // インメモリDB
   });
 
   afterEach(() => {

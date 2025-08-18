@@ -4,10 +4,8 @@ import {
   TodoBody,
   TodoReqQuery,
   Todo,
+  TodoRepository,
 } from "../../types/types";
-import { todoDbService } from "../services/todoDbService";
-
-const db = todoDbService("src/api/services/todo-express-db.sqlite3");
 
 /**
  * ToDo一覧を取得するAPIハンドラー
@@ -17,20 +15,22 @@ const db = todoDbService("src/api/services/todo-express-db.sqlite3");
  * @param res - Expressレスポンス
  * @returns ToDo配列（全件 or completed=true/false に応じた絞り込み）
  */
-export const getTodos = (
-  req: Request<{}, {}, {}, TodoReqQuery>, // Request<Params, ResBody, ReqBody, ReqQuery>
-  res: Response
-): Response<Todo[]> => {
-  const { completed } = req.query;
+export const getTodos =
+  (db: TodoRepository) =>
+  (
+    req: Request<{}, {}, {}, TodoReqQuery>, // Request<Params, ResBody, ReqBody, ReqQuery>
+    res: Response
+  ): Response<Todo[]> => {
+    const { completed } = req.query;
 
-  // "/"の場合
-  if (!completed) {
-    return res.json(db.getAll());
-  }
-  // "/?completed=true" or falseの場合
-  const isCompleted = completed === "true";
-  return res.json(db.getCompleted(isCompleted));
-};
+    // "/"の場合
+    if (!completed) {
+      return res.json(db.getAll());
+    }
+    // "/?completed=true" or falseの場合
+    const isCompleted = completed === "true";
+    return res.json(db.getCompleted(isCompleted));
+  };
 
 /**
  * 新しいToDoを追加するAPIハンドラー
@@ -39,14 +39,16 @@ export const getTodos = (
  * @param res - Expressレスポンス
  * @returns 作成成功メッセージ
  */
-export const addTodo = (
-  req: Request<{}, {}, TodoBody, {}>, // Request<Params, ResBody, ReqBody, ReqQuery>
-  res: Response
-): Response<{ message: string }> => {
-  const { todoName } = req.body;
-  db.insert(todoName);
-  return res.status(201).json({ message: "Todo created" });
-};
+export const addTodo =
+  (db: TodoRepository) =>
+  (
+    req: Request<{}, {}, TodoBody, {}>, // Request<Params, ResBody, ReqBody, ReqQuery>
+    res: Response
+  ): Response<{ message: string }> => {
+    const { todoName } = req.body;
+    db.insert(todoName);
+    return res.status(201).json({ message: "Todo created" });
+  };
 
 /**
  * 指定されたToDoの completed 状態を更新するAPIハンドラー
@@ -55,13 +57,15 @@ export const addTodo = (
  * @param res - Expressレスポンス
  * @returns 更新成功メッセージ
  */
-export const updateTodo = (
-  req: isTodoHandlingRequest,
-  res: Response
-): Response<{ message: string }> => {
-  db.update(req.todo!);
-  return res.status(200).json({ message: "Todo updated" });
-};
+export const updateTodo =
+  (db: TodoRepository) =>
+  (
+    req: isTodoHandlingRequest,
+    res: Response
+  ): Response<{ message: string }> => {
+    db.update(req.todo!);
+    return res.status(200).json({ message: "Todo updated" });
+  };
 
 /**
  * 指定されたToDoを削除するAPIハンドラー
@@ -70,10 +74,12 @@ export const updateTodo = (
  * @param res - Expressレスポンス
  * @returns 削除成功メッセージ
  */
-export const deleteTodo = (
-  req: isTodoHandlingRequest,
-  res: Response
-): Response<{ message: string }> => {
-  db.remove(req.todo!.id);
-  return res.status(200).json({ message: "Todo delete" });
-};
+export const deleteTodo =
+  (db: TodoRepository) =>
+  (
+    req: isTodoHandlingRequest,
+    res: Response
+  ): Response<{ message: string }> => {
+    db.remove(req.todo!.id);
+    return res.status(200).json({ message: "Todo delete" });
+  };

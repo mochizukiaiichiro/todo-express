@@ -41,7 +41,7 @@ export type Pages = Record<Page, { title: string; fetchQuery: string }>;
 export type Props = { page: Page };
 
 // todoDbService
-export type TodoDbService = {
+export type TodoRepository = {
   /** DB接続を閉じる */
   close: () => void;
 

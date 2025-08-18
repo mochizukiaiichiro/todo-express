@@ -1,33 +1,14 @@
-import Database from "better-sqlite3";
+import { Database } from "better-sqlite3";
 import { v4 as uuidv4 } from "uuid";
-import { Todo, TodoDbService, TodoRow } from "../../types/types";
+import { Todo, TodoRow } from "../../types/types";
 import isTodoRow from "./isTodoRow";
 
 /**
- * SQLite3 を用いた ToDo データの永続化サービス
- * - ToDo の作成・取得・更新・削除を提供
+ * ToDo操作を提供するリポジトリ
+ * @param db - SQLite3インスタンス
+ * @returns ToDo操作関数群
  */
-export const todoDbService = (path: string = ":memory:"): TodoDbService => {
-  /** SQLite3 データベースインスタンス */
-  const db = new Database(path);
-
-  /**
-   * 初期化処理
-   * - `todos` テーブルが存在しない場合は作成する
-   * - completed は INTEGER（0=false, 1=true）として保存
-   */
-  const init = () => {
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS todos (
-        id TEXT PRIMARY KEY,
-        todoName TEXT,
-        completed INTEGER NOT NULL CHECK (completed IN (0,1)),
-        created_at INTEGER NOT NULL DEFAULT (unixepoch())
-      );
-    `);
-  };
-  init();
-
+export const todoRepository = (db: Database) => { 
   /**
    * データベース接続を閉じます。
    * @throws {Error} 接続のクローズ処理中にエラーが発生した場合
@@ -156,4 +137,4 @@ export const todoDbService = (path: string = ":memory:"): TodoDbService => {
     getCompleted,
     getId,
   };
-};
+}
