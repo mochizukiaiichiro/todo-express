@@ -1,4 +1,4 @@
-import { Database } from "better-sqlite3";
+import { Database } from 'better-sqlite3';
 
 /**
  * todos テーブルの初期化処理

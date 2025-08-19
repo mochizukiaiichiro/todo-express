@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Todo } from "../types/types";
+import { useState } from 'react';
+import { Todo } from '../types/types';
 
 /**
  * ToDoデータの取得・操作を提供するカスタムフック
@@ -41,10 +41,10 @@ export const useFetchUtils = (fetchQuery: string) => {
    * @returns void
    */
   const addTodo = async (todoName: string) => {
-    const res = await fetch("/api/todos", {
-      method: "POST",
+    const res = await fetch('/api/todos', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ todoName }),
     });
@@ -59,7 +59,7 @@ export const useFetchUtils = (fetchQuery: string) => {
    */
   const onChangeCheckbox = async (id: string) => {
     const res = await fetch(`/api/todos/${id}/completed`, {
-      method: "PUT",
+      method: 'PUT',
     });
     handlePostFetch(res);
   };
@@ -72,7 +72,7 @@ export const useFetchUtils = (fetchQuery: string) => {
    */
   const onClickDeleteButton = async (id: string) => {
     const res = await fetch(`/api/todos/${id}`, {
-      method: "DELETE",
+      method: 'DELETE',
     });
     handlePostFetch(res);
   };

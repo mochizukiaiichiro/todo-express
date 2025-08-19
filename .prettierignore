@@ -1,0 +1,15 @@
+# node_modules は常に除外
+node_modules
+
+# ビルド成果物
+dist
+build
+.next
+out
+
+# テストカバレッジ
+coverage
+
+# ログや一時ファイル
+*.log
+.tmp

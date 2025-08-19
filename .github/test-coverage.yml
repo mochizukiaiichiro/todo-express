@@ -1,0 +1,47 @@
+name: CI - Test with Coverage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリのコードをチェックアウト
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # 2. Node.js 環境セットアップ（キャッシュ有効化）
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 3. 依存パッケージインストール
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. ESLint チェック
+      - name: Run ESLint
+        run: npm run lint
+
+       # 5. Prettier チェック
+      - name: Run Prettier check
+        run: npm run prettier:check
+
+      # 5. Jestテスト + カバレッジ取得
+      - name: Run tests with coverage
+        run: npm run test:coverage -- --ci --runInBand
+
+      # 6. coverageをアーティファクトとして保存
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+          retention-days: 7

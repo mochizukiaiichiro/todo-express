@@ -2,7 +2,11 @@
 
 Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のために作成したアプリケーションです。『[ハンズオンNode.js](https://www.oreilly.co.jp/books/9784873119236/)』の[ToDo管理アプリケーション](https://github.com/oreilly-japan/hands-on-nodejs/tree/master/ch05)を元に機能の追加や改善、技術の最新化、モジュール構成の最適化などを行っています。
 
+[![CI](https://github.com/mochizukiaiichiro/todo-express/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/mochizukiaiichiro/todo-express/actions)
+[![codecov](https://codecov.io/gh/mochizukiaiichiro/todo-express/branch/main/graph/badge.svg)](https://codecov.io/gh/mochizukiaiichiro/todo-express)
+
 ---
+
 ## 「ハンズオンNode.js」からの変更点
 
 - Express 5系 と Next.js 15（App Router）に変更（最新のモジュールをに更新）
@@ -12,6 +16,7 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 - モジュール構成の最適化に合わせたディレクトリ構成の修正
 
 ---
+
 ## ToDo管理アプリケーションの概要
 
 - ToDo の取得（全件／未完了／完了フィルタ）
@@ -20,9 +25,10 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 - ToDo の削除（削除ボタン）
 
 ---
+
 ## ディレクトリ構成（抜粋）
 
-```text       
+```text
 /src
 ├ app.ts                  # Express + Next.js 統合エントリポイント
 ├── app/                # Next.jsページ群（App Router）
@@ -37,17 +43,20 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
       ├── middlewares/  # バリデーション・エラー処理
       └── data/         # ToDo管理アプリケーションのデータ
 ```
+
 ---
+
 ## API
 
-| メソッド | パス | 概要 |
-|----------|------|------|
+| メソッド | パス                     | 概要                               |
+| -------- | ------------------------ | ---------------------------------- |
 | GET      | /api/todos               | ToDoの取得（クエリで絞り込み可能） |
-| POST     | /api/todos               | ToDoの追加 |
-| PUT      | /api/todos/:id/completed | 対象ToDoのcompletedを反転 |
-| DELETE   | /api/todos/:id           | 対象ToDoを削除 |
+| POST     | /api/todos               | ToDoの追加                         |
+| PUT      | /api/todos/:id/completed | 対象ToDoのcompletedを反転          |
+| DELETE   | /api/todos/:id           | 対象ToDoを削除                     |
 
 ---
+
 ## 使用技術
 
 - バックエンド：Express 5.1 / better-sqlite3
@@ -57,6 +66,7 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 - 実行環境：tsx
 
 ---
+
 ## 起動手順
 
 ```bash

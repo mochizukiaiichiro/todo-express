@@ -1,11 +1,11 @@
-import { Todo } from "../../types/types";
+import { Todo } from '../../types/types';
 
 export default function isTodoRow(value: unknown): value is Todo {
   return (
-    typeof value === "object" &&
+    typeof value === 'object' &&
     value !== null &&
-    "id" in value &&
-    "todoName" in value &&
-    "completed" in value
+    'id' in value &&
+    'todoName' in value &&
+    'completed' in value
   );
 }

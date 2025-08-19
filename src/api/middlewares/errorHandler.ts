@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
 
 /**
  * 共通エラーハンドラー
@@ -9,12 +9,7 @@ import { Request, Response, NextFunction } from "express";
  * @param next - 次のミドルウェア関数（未使用）
  * @returns エラーレスポンス（statusCode: err.statusCode または 500）
  */
-export const errorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
   res.status(err.statusCode || 500).json({ message: err.message });
 };

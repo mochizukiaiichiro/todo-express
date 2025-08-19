@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
   isTodoHandlingRequest,
   TodoBody,
   TodoReqQuery,
   Todo,
   TodoRepository,
-} from "../../types/types";
+} from '../../types/types';
 
 /**
  * ToDo一覧を取得するAPIハンドラー
@@ -28,7 +28,7 @@ export const getTodos =
       return res.json(db.getAll());
     }
     // "/?completed=true" or falseの場合
-    const isCompleted = completed === "true";
+    const isCompleted = completed === 'true';
     return res.json(db.getCompleted(isCompleted));
   };
 
@@ -47,7 +47,7 @@ export const addTodo =
   ): Response<{ message: string }> => {
     const { todoName } = req.body;
     db.insert(todoName);
-    return res.status(201).json({ message: "Todo created" });
+    return res.status(201).json({ message: 'Todo created' });
   };
 
 /**
@@ -59,12 +59,9 @@ export const addTodo =
  */
 export const updateTodo =
   (db: TodoRepository) =>
-  (
-    req: isTodoHandlingRequest,
-    res: Response
-  ): Response<{ message: string }> => {
+  (req: isTodoHandlingRequest, res: Response): Response<{ message: string }> => {
     db.update(req.todo!);
-    return res.status(200).json({ message: "Todo updated" });
+    return res.status(200).json({ message: 'Todo updated' });
   };
 
 /**
@@ -76,10 +73,7 @@ export const updateTodo =
  */
 export const deleteTodo =
   (db: TodoRepository) =>
-  (
-    req: isTodoHandlingRequest,
-    res: Response
-  ): Response<{ message: string }> => {
+  (req: isTodoHandlingRequest, res: Response): Response<{ message: string }> => {
     db.remove(req.todo!.id);
-    return res.status(200).json({ message: "Todo delete" });
+    return res.status(200).json({ message: 'Todo delete' });
   };

@@ -1,14 +1,14 @@
-import { Database } from "better-sqlite3";
-import { v4 as uuidv4 } from "uuid";
-import { Todo, TodoRow } from "../../types/types";
-import isTodoRow from "./isTodoRow";
+import { Database } from 'better-sqlite3';
+import { v4 as uuidv4 } from 'uuid';
+import { Todo, TodoRow } from '../../types/types';
+import isTodoRow from './isTodoRow';
 
 /**
  * ToDo操作を提供するリポジトリ
  * @param db - SQLite3インスタンス
  * @returns ToDo操作関数群
  */
-export const todoRepository = (db: Database) => { 
+export const todoRepository = (db: Database) => {
   /**
    * データベース接続を閉じます。
    * @throws {Error} 接続のクローズ処理中にエラーが発生した場合
@@ -31,7 +31,7 @@ export const todoRepository = (db: Database) => {
     const id = uuidv4();
     const completed = false;
     const res = db
-      .prepare("INSERT INTO todos (id,todoName,completed) VALUES (?,?,?)")
+      .prepare('INSERT INTO todos (id,todoName,completed) VALUES (?,?,?)')
       .run(id, todoName, Number(completed)); //Number(completed) true → 1, false → 0
 
     return { id, changes: res.changes };
@@ -80,7 +80,7 @@ export const todoRepository = (db: Database) => {
    * @throws {Error} データベース操作中にエラーが発生した場合
    */
   const getAll = (): Todo[] => {
-    const rows = db.prepare("SELECT * FROM todos").all() as TodoRow[];
+    const rows = db.prepare('SELECT * FROM todos').all() as TodoRow[];
     return rows.map((r) => ({
       ...r,
       completed: Boolean(r.completed),
@@ -100,7 +100,7 @@ export const todoRepository = (db: Database) => {
    */
   const getCompleted = (completed: boolean): Todo[] => {
     const rows = db
-      .prepare("SELECT * FROM todos WHERE completed = ?")
+      .prepare('SELECT * FROM todos WHERE completed = ?')
       .all(Number(completed)) as Array<TodoRow>; //Number(completed) true → 1, false → 0
 
     return rows.map((r) => ({
@@ -116,7 +116,7 @@ export const todoRepository = (db: Database) => {
    * @returns {Todo|undefined} 該当する Todo。存在しない場合は undefined を返す。
    */
   const getId = (id: string): Todo | undefined => {
-    const result = db.prepare("SELECT * FROM todos WHERE id = ?").get(id);
+    const result = db.prepare('SELECT * FROM todos WHERE id = ?').get(id);
     // 型ガードで result が Todo 型か確認
     if (isTodoRow(result)) {
       return {
@@ -137,4 +137,4 @@ export const todoRepository = (db: Database) => {
     getCompleted,
     getId,
   };
-}
+};

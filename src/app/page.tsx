@@ -1,9 +1,9 @@
-import TodoPage from "../components/TodoPage"
+import TodoPage from '../components/TodoPage';
 
 export default function Page() {
-    return (
-        <>
-            <TodoPage page="index"/>
-        </>
-    )
+  return (
+    <>
+      <TodoPage page="index" />
+    </>
+  );
 }

@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { Props } from "../types/types";
-import { useFetchUtils } from "./useFetchUtils";
-import { pages } from "../components/PageLinks";
+import { useEffect } from 'react';
+import { Props } from '../types/types';
+import { useFetchUtils } from './useFetchUtils';
+import { pages } from '../components/PageLinks';
 
 /**
  * ページに応じた初期化処理を行うカスタムフック

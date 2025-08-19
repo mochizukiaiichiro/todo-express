@@ -1,6 +1,6 @@
-import { Request } from "express";
+import { Request } from 'express';
 
-import z from "zod";
+import z from 'zod';
 
 export type Todo = {
   id: string;
@@ -17,12 +17,12 @@ export type TodoRow = {
 };
 
 export type TodoReqQuery = {
-  completed?: "true" | "false";
+  completed?: 'true' | 'false';
 };
 
 //バリデーションスキーマの宣言
 export const todoSchema = z.object({
-  todoName: z.string().min(1, "タイトルは必須です。"), //1文字以上の文字列
+  todoName: z.string().min(1, 'タイトルは必須です。'), //1文字以上の文字列
 });
 
 export type TodoBody = z.infer<typeof todoSchema>;
@@ -36,7 +36,7 @@ export type isTodoHandlerRequest = Request<{ id: string }, {}, {}, {}> & {
 export type isTodoHandlingRequest = Request & { todo?: Todo };
 
 // UI Component Types
-export type Page = "index" | "active" | "completed";
+export type Page = 'index' | 'active' | 'completed';
 export type Pages = Record<Page, { title: string; fetchQuery: string }>;
 export type Props = { page: Page };
 
