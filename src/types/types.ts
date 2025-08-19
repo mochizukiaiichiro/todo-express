@@ -28,7 +28,13 @@ export const todoSchema = z.object({
 export type TodoBody = z.infer<typeof todoSchema>;
 
 // isTodoHandlerミドルウェアのRequest
-export type isTodoHandlerRequest = Request<{ id: string }, {}, {}, {}> & {
+//Record<string, never>は空のオブジェクト({})を明示
+export type isTodoHandlerRequest = Request<
+  { id: string },
+  Record<string, never>,
+  Record<string, never>,
+  Record<string, never>
+> & {
   todo?: Todo;
 };
 

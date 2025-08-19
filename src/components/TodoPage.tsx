@@ -17,7 +17,6 @@ import styles from '../styles/TodoPage.module.css';
 export default function TodoPage(props: Props) {
   const { title } = pages[props.page];
   const { todos, addTodo, onChangeCheckbox, onClickDeleteButton } = useInitialize(props);
-  (id: string) => Promise<void>;
   return (
     <div className={styles.page}>
       <HeadMeta title={title} />

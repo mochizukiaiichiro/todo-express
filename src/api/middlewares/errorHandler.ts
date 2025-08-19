@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
+interface CustomError extends Error {
+  statusCode?: number;
+}
+
 /**
  * 共通エラーハンドラー
  * - エラー内容をコンソールに出力し、HTTPステータスコードとメッセージを返す
@@ -9,7 +13,12 @@ import { Request, Response, NextFunction } from 'express';
  * @param next - 次のミドルウェア関数（未使用）
  * @returns エラーレスポンス（statusCode: err.statusCode または 500）
  */
-export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (
+  err: CustomError,
+  req: Request,
+  res: Response,
+  _next: NextFunction
+) => {
   console.error(err);
-  res.status(err.statusCode || 500).json({ message: err.message });
+  res.status(err.statusCode ?? 500).json({ message: err.message });
 };

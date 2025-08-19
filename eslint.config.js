@@ -58,7 +58,7 @@ export default [
     },
     rules: {
       'prettier/prettier': 'error', // Prettier違反をエラー扱い
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }], 
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     },
   },
 

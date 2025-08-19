@@ -18,7 +18,8 @@ import {
 export const getTodos =
   (db: TodoRepository) =>
   (
-    req: Request<{}, {}, {}, TodoReqQuery>, // Request<Params, ResBody, ReqBody, ReqQuery>
+    //Record<string, never>は空のオブジェクト({})を明示
+    req: Request<Record<string, never>, Record<string, never>, Record<string, never>, TodoReqQuery>, // Request<Params, ResBody, ReqBody, ReqQuery>
     res: Response
   ): Response<Todo[]> => {
     const { completed } = req.query;
@@ -42,7 +43,8 @@ export const getTodos =
 export const addTodo =
   (db: TodoRepository) =>
   (
-    req: Request<{}, {}, TodoBody, {}>, // Request<Params, ResBody, ReqBody, ReqQuery>
+    //Record<string, never>は空のオブジェクト({})を明示
+    req: Request<Record<string, never>, Record<string, never>, TodoBody, Record<string, never>>, // Request<Params, ResBody, ReqBody, ReqQuery>
     res: Response
   ): Response<{ message: string }> => {
     const { todoName } = req.body;
