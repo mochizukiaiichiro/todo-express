@@ -9,6 +9,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage --coverageReporters=lcov",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --fix --max-warnings=0",
+    "lint:fix": "eslint . --fix",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "stop": ".",

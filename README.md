@@ -2,9 +2,6 @@
 
 Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のために作成したアプリケーションです。『[ハンズオンNode.js](https://www.oreilly.co.jp/books/9784873119236/)』の[ToDo管理アプリケーション](https://github.com/oreilly-japan/hands-on-nodejs/tree/master/ch05)を元に機能の追加や改善、技術の最新化、モジュール構成の最適化などを行っています。
 
-[![CI](https://github.com/mochizukiaiichiro/todo-express/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/mochizukiaiichiro/todo-express/actions)
-[![codecov](https://codecov.io/gh/mochizukiaiichiro/todo-express/branch/main/graph/badge.svg)](https://codecov.io/gh/mochizukiaiichiro/todo-express)
-
 ---
 
 ## 「ハンズオンNode.js」からの変更点

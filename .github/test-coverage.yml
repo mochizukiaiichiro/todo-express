@@ -30,15 +30,15 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-       # 5. Prettier チェック
+      # 5. Prettier チェック
       - name: Run Prettier check
         run: npm run prettier:check
 
-      # 5. Jestテスト + カバレッジ取得
+      # 6. Jestテスト + カバレッジ取得
       - name: Run tests with coverage
         run: npm run test:coverage -- --ci --runInBand
 
-      # 6. coverageをアーティファクトとして保存
+      # 7. coverageをアーティファクトとして保存
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
