@@ -1,5 +1,5 @@
 import { addTodo, deleteTodo, getTodos, updateTodo } from '../../../api/controllers/todosApi';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import {
   TodoReqQuery,
   Todo,
@@ -7,33 +7,23 @@ import {
   TodoBody,
   isTodoHandlingRequest,
 } from '../../../types/types';
-
-//レスポンス用ヘルパー関数
-const createMockRes = () => {
-  const res = {
-    status: jest.fn().mockReturnThis(),
-    json: jest.fn(),
-  };
-  return res as unknown as Response<{ message: string }>;
-};
+import { createMockDb, createMockRes } from '../../../utils/testUtils';
 
 describe('todosApi', () => {
   describe('getTodos()', () => {
+    let mockDb: jest.Mocked<TodoRepository>;
+
+    beforeEach(() => {
+      mockDb = createMockDb();
+    });
+
     /**
      * 正常系：
      */
     test('GET /api/todos ,getAll()を呼ぶ', () => {
       // --- 前提 ---
       // 代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn().mockReturnValue([{ id: '1' } as Todo]),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
+      mockDb.getAll.mockReturnValue([{ id: '1' } as Todo]);
 
       // リクエスト
       const req = { query: {} } as Request<
@@ -61,15 +51,7 @@ describe('todosApi', () => {
     test('GET /api/todos/completed=true指定,getCompleted()を呼ぶ', () => {
       // --- 前提 ---
       //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn().mockReturnValue([{ id: '1' } as Todo]),
-        getId: jest.fn(),
-      };
+      mockDb.getCompleted.mockReturnValue([{ id: '1' } as Todo]);
 
       // リクエスト
       const req = { query: { completed: 'true' } } as Request<
@@ -97,15 +79,7 @@ describe('todosApi', () => {
     test('GET /api/todos/completed=false指定,getCompleted()を呼ぶ', () => {
       // --- 前提 ---
       //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn().mockReturnValue([{ id: '1' } as Todo]),
-        getId: jest.fn(),
-      };
+      mockDb.getCompleted.mockReturnValue([{ id: '1' } as Todo]);
 
       // リクエスト
       const req = { query: { completed: 'false' } } as Request<
@@ -129,22 +103,17 @@ describe('todosApi', () => {
   });
 
   describe('addTodo()', () => {
+    let mockDb: jest.Mocked<TodoRepository>;
+
+    beforeEach(() => {
+      mockDb = createMockDb();
+    });
+
     /**
      * 正常系：
      */
     test('POST /api/todos: todoName を登録し、201 Created を返', () => {
       // --- 前提 ---
-      //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
-
       // リクエスト
       const req = { body: { todoName: 'test' } } as Request<
         Record<string, never>,
@@ -170,17 +139,6 @@ describe('todosApi', () => {
      */
     test('POST /api/todos: "" ,todoName  が空文字の場合、400 とエラーメッセージを返す', async () => {
       // --- 前提 ---
-      //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
-
       // リクエスト
       const req = { body: { todoName: '' } } as Request<
         Record<string, never>,
@@ -206,22 +164,17 @@ describe('todosApi', () => {
   });
 
   describe('updateTodo()', () => {
+    let mockDb: jest.Mocked<TodoRepository>;
+
+    beforeEach(() => {
+      mockDb = createMockDb();
+    });
+
     /**
      * 正常系：
      */
     test('PUT /api/todos/:id/completed でupdateを実行する。200 とメッセージを返す', () => {
       // --- 前提 ---
-      //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
-
       // リクエスト
       const req = {
         todo: {
@@ -254,17 +207,6 @@ describe('todosApi', () => {
      */
     test('PUT /api/todos/:id/completed , req.todo が undefined の場合。400 とメッセージを返す', () => {
       // --- 前提 ---
-      //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
-
       // リクエスト
       const req = {} as isTodoHandlingRequest;
 
@@ -286,15 +228,7 @@ describe('todosApi', () => {
     test('PUT /api/todos/:id/completed ,存在しないidを指定した場合。400 とメッセージを返す', () => {
       // --- 前提 ---
       //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn().mockReturnValue(0),
-        getAll: jest.fn(),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
+      mockDb.update.mockReturnValue(0);
 
       // リクエスト
       const req = {
@@ -319,22 +253,17 @@ describe('todosApi', () => {
   });
 
   describe('deleteTodo()', () => {
+    let mockDb: jest.Mocked<TodoRepository>;
+
+    beforeEach(() => {
+      mockDb = createMockDb();
+    });
+
     /**
      * 正常系：
      */
     test('DELETE /api/todos/:idでremoveを実行する。200 とメッセージを返す', () => {
       // --- 前提 ---
-      //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn(),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
-
       // リクエスト
       const req = {
         todo: {
@@ -362,16 +291,7 @@ describe('todosApi', () => {
      */
     test('DELETE /api/todos/:id,存在しないidを指定した場合。400 とメッセージを返す', () => {
       // --- 前提 ---
-      //代替実装
-      const mockDb: jest.Mocked<TodoRepository> = {
-        close: jest.fn(),
-        insert: jest.fn(),
-        remove: jest.fn().mockReturnValue(0),
-        update: jest.fn(),
-        getAll: jest.fn(),
-        getCompleted: jest.fn(),
-        getId: jest.fn(),
-      };
+      mockDb.remove.mockReturnValue(0);
 
       // リクエスト
       const req = {
