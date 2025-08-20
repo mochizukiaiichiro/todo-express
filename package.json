@@ -12,6 +12,7 @@
     "lint:fix": "eslint . --fix",
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
+    "check:all": "npm run lint && npm run prettier:check",
     "stop": ".",
     "restart": "."
   },

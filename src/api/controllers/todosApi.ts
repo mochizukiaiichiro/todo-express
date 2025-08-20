@@ -5,6 +5,7 @@ import {
   TodoReqQuery,
   Todo,
   TodoRepository,
+  todoSchema,
 } from '../../types/types';
 
 /**
@@ -47,6 +48,14 @@ export const addTodo =
     req: Request<Record<string, never>, Record<string, never>, TodoBody, Record<string, never>>, // Request<Params, ResBody, ReqBody, ReqQuery>
     res: Response
   ): Response<{ message: string }> => {
+    // エラー処理,todoNameが空文字の場合
+    const parsed = todoSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: parsed.error.issues.map((i) => i.message).join(', '),
+      });
+    }
+
     const { todoName } = req.body;
     db.insert(todoName);
     return res.status(201).json({ message: 'Todo created' });
@@ -62,7 +71,18 @@ export const addTodo =
 export const updateTodo =
   (db: TodoRepository) =>
   (req: isTodoHandlingRequest, res: Response): Response<{ message: string }> => {
-    db.update(req.todo!);
+    // エラー処理,req.todo が undefined の場合
+    if (!req.todo) {
+      return res.status(400).json({ message: 'Todo not found' });
+    }
+
+    const changes = db.update(req.todo);
+
+    //エラー処理,存在しないID
+    if (changes === 0) {
+      return res.status(400).json({ message: 'Todo not found' });
+    }
+
     return res.status(200).json({ message: 'Todo updated' });
   };
 
@@ -76,6 +96,12 @@ export const updateTodo =
 export const deleteTodo =
   (db: TodoRepository) =>
   (req: isTodoHandlingRequest, res: Response): Response<{ message: string }> => {
-    db.remove(req.todo!.id);
+    const changes = db.remove(req.todo!.id);
+
+    //エラー処理,存在しないID
+    if (changes === 0) {
+      return res.status(400).json({ message: 'Todo not found' });
+    }
+
     return res.status(200).json({ message: 'Todo delete' });
   };

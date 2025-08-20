@@ -22,7 +22,7 @@ export type TodoReqQuery = {
 
 //バリデーションスキーマの宣言
 export const todoSchema = z.object({
-  todoName: z.string().min(1, 'タイトルは必須です。'), //1文字以上の文字列
+  todoName: z.string().min(1, 'todoName is required'), //1文字以上の文字列
 });
 
 export type TodoBody = z.infer<typeof todoSchema>;
