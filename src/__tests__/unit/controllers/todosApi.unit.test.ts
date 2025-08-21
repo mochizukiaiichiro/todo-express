@@ -1,13 +1,11 @@
 import { addTodo, deleteTodo, getTodos, updateTodo } from '../../../api/controllers/todosApi';
-import { Request } from 'express';
+import { Todo, TodoRepository, isTodoHandlingRequest } from '../../../types/types';
 import {
-  TodoReqQuery,
-  Todo,
-  TodoRepository,
-  TodoBody,
-  isTodoHandlingRequest,
-} from '../../../types/types';
-import { createMockDb, createMockRes } from '../../../utils/testUtils';
+  AddTodoRequestType,
+  createMockDb,
+  createMockRes,
+  GetTodosRequestType,
+} from '../../../utils/testUtils';
 
 describe('todosApi', () => {
   describe('getTodos()', () => {
@@ -22,19 +20,9 @@ describe('todosApi', () => {
      */
     test('GET /api/todos ,getAll()を呼ぶ', () => {
       // --- 前提 ---
-      // 代替実装
-      mockDb.getAll.mockReturnValue([{ id: '1' } as Todo]);
-
-      // リクエスト
-      const req = { query: {} } as Request<
-        Record<string, never>, // パスパラメータ: 不使用（Record<string, never>は空のオブジェクト({})）
-        Record<string, never>, // レスポンスボディ: 不使用
-        Record<string, never>, // リクエストボディ: 不使用
-        TodoReqQuery // クエリ: テストで検証したい型
-      >;
-
-      // レスポンス
-      const res = createMockRes();
+      mockDb.getAll.mockReturnValue([{ id: '1' } as Todo]); // 代替実装
+      const req = { query: {} } as GetTodosRequestType; // リクエスト
+      const res = createMockRes(); // レスポンス
 
       // --- 実行 ---
       getTodos(mockDb)(req, res);
@@ -50,19 +38,9 @@ describe('todosApi', () => {
      */
     test('GET /api/todos/completed=true指定,getCompleted()を呼ぶ', () => {
       // --- 前提 ---
-      //代替実装
-      mockDb.getCompleted.mockReturnValue([{ id: '1' } as Todo]);
-
-      // リクエスト
-      const req = { query: { completed: 'true' } } as Request<
-        Record<string, never>, // パスパラメータ: 不使用（Record<string, never>は空のオブジェクト({})）
-        Record<string, never>, // レスポンスボディ: 不使用
-        Record<string, never>, // リクエストボディ: 不使用
-        TodoReqQuery // クエリ: テストで検証したい型
-      >;
-
-      // レスポンス
-      const res = createMockRes();
+      mockDb.getCompleted.mockReturnValue([{ id: '1' } as Todo]); //代替実装
+      const req = { query: { completed: 'true' } } as GetTodosRequestType; // リクエスト
+      const res = createMockRes(); // レスポンス
 
       // --- 実行 ---
       getTodos(mockDb)(req, res);
@@ -78,19 +56,9 @@ describe('todosApi', () => {
      */
     test('GET /api/todos/completed=false指定,getCompleted()を呼ぶ', () => {
       // --- 前提 ---
-      //代替実装
-      mockDb.getCompleted.mockReturnValue([{ id: '1' } as Todo]);
-
-      // リクエスト
-      const req = { query: { completed: 'false' } } as Request<
-        Record<string, never>, // パスパラメータ: 不使用（Record<string, never>は空のオブジェクト({})）
-        Record<string, never>, // レスポンスボディ: 不使用
-        Record<string, never>, // リクエストボディ: 不使用
-        TodoReqQuery // クエリ: テストで検証したい型
-      >;
-
-      // レスポンス
-      const res = createMockRes();
+      mockDb.getCompleted.mockReturnValue([{ id: '1' } as Todo]); //代替実装
+      const req = { query: { completed: 'false' } } as GetTodosRequestType; // リクエスト
+      const res = createMockRes(); // レスポンス
 
       // --- 実行 ---
       getTodos(mockDb)(req, res);
@@ -114,16 +82,8 @@ describe('todosApi', () => {
      */
     test('POST /api/todos: todoName を登録し、201 Created を返', () => {
       // --- 前提 ---
-      // リクエスト
-      const req = { body: { todoName: 'test' } } as Request<
-        Record<string, never>,
-        Record<string, never>,
-        TodoBody,
-        Record<string, never>
-      >;
-
-      // レスポンス
-      const res = createMockRes();
+      const req = { body: { todoName: 'test' } } as AddTodoRequestType; // リクエスト
+      const res = createMockRes(); // レスポンス
 
       // --- 実行 ---
       addTodo(mockDb)(req, res);
@@ -139,16 +99,8 @@ describe('todosApi', () => {
      */
     test('POST /api/todos: "" ,todoName  が空文字の場合、400 とエラーメッセージを返す', async () => {
       // --- 前提 ---
-      // リクエスト
-      const req = { body: { todoName: '' } } as Request<
-        Record<string, never>,
-        Record<string, never>,
-        TodoBody,
-        Record<string, never>
-      >;
-
-      // レスポンス
-      const res = createMockRes();
+      const req = { body: { todoName: '' } } as AddTodoRequestType; // リクエスト
+      const res = createMockRes(); // レスポンス
 
       // --- 実行 ---
       await addTodo(mockDb)(req, res);
@@ -177,16 +129,10 @@ describe('todosApi', () => {
       // --- 前提 ---
       // リクエスト
       const req = {
-        todo: {
-          id: '1',
-          todoName: 'test',
-          completed: false,
-          created_at: 0,
-        },
+        todo: { id: '1', todoName: 'test', completed: false, created_at: 0 },
       } as isTodoHandlingRequest;
 
-      // レスポンス
-      const res = createMockRes();
+      const res = createMockRes(); // レスポンス
 
       // --- 実行 ---
       updateTodo(mockDb)(req, res);
@@ -207,11 +153,8 @@ describe('todosApi', () => {
      */
     test('PUT /api/todos/:id/completed , req.todo が undefined の場合。400 とメッセージを返す', () => {
       // --- 前提 ---
-      // リクエスト
-      const req = {} as isTodoHandlingRequest;
-
-      // レスポンス
-      const res = createMockRes();
+      const req = {} as isTodoHandlingRequest; // リクエスト
+      const res = createMockRes(); // レスポンス
 
       // --- 実行 ---
       updateTodo(mockDb)(req, res);
@@ -232,12 +175,7 @@ describe('todosApi', () => {
 
       // リクエスト
       const req = {
-        todo: {
-          id: 'non-existent-id',
-          todoName: 'test',
-          completed: false,
-          created_at: 0,
-        },
+        todo: { id: 'non-existent-id', todoName: 'test', completed: false, created_at: 0 },
       } as isTodoHandlingRequest;
 
       // レスポンス
@@ -266,12 +204,7 @@ describe('todosApi', () => {
       // --- 前提 ---
       // リクエスト
       const req = {
-        todo: {
-          id: '1',
-          todoName: 'test',
-          completed: false,
-          created_at: 0,
-        },
+        todo: { id: '1', todoName: 'test', completed: false, created_at: 0 },
       } as isTodoHandlingRequest;
 
       // レスポンス
@@ -295,12 +228,7 @@ describe('todosApi', () => {
 
       // リクエスト
       const req = {
-        todo: {
-          id: 'non-existent-id',
-          todoName: 'test',
-          completed: false,
-          created_at: 0,
-        },
+        todo: { id: 'non-existent-id', todoName: 'test', completed: false, created_at: 0 },
       } as isTodoHandlingRequest;
 
       // レスポンス
