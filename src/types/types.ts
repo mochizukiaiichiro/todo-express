@@ -69,3 +69,8 @@ export type TodoRepository = {
   /** 指定IDのToDoを取得する（存在しない場合はundefined） */
   getId: (id: string) => Todo | undefined;
 };
+
+// errorHandler interface;
+export interface CustomError extends Error {
+  statusCode?: number;
+}
