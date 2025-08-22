@@ -7,7 +7,7 @@
     "check": "npx tsc --noEmit",
     "watch": "npx tsx watch ./src/app.ts",
     "test": "jest",
-    "test:coverage": "jest --coverage --coverageReporters=lcov",
+    "test:coverage": "jest --coverage --coverageReporters=lcov --coverageReporters=text",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --fix --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "prettier:check": "prettier --check .",
@@ -22,6 +22,9 @@
   "description": "",
   "type": "module",
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/better-sqlite3": "^7.6.13",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
