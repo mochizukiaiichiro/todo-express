@@ -1,9 +1,21 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 export default {
   preset: 'ts-jest',
-  testEnvironment: 'node',
-  roots: ['<rootDir>/src/__tests__'],
+  testEnvironment: 'jsdom',
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+    },
+  },
+  testMatch: ['<rootDir>/src/**/*.test.{ts,tsx,js,jsx}'],
   coverageDirectory: 'coverage',
-  coverageReporters: ['text', 'lcov'],
-  collectCoverageFrom: ['**/*.{ts,tsx}', '!**/node_modules/**', '!**/vendor/**'],
+  coverageReporters: ['text', 'lcov', 'html'],
+  collectCoverage: true,
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    '!src/**/*.d.ts',
+    '!src/**/__tests__/**', // テストコードは除外
+    '!**/node_modules/**',
+    '!**/vendor/**',
+  ],
 };
