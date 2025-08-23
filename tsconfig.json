@@ -111,18 +111,13 @@
     "incremental": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "include": [
-    "./src/**/*.mts",
-    "./src/**/*.ts",
-    ".next/types/**/*.ts",
-    "src/__tests__/unit/ui/components/HeadMeta.unit.test.tsx"
-  ],
+  "include": ["./src/**/*.mts", "./src/**/*.ts", ".next/types/**/*.ts", "src", "__tests__"],
   "exclude": ["node_modules"]
 }

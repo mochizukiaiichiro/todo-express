@@ -13,7 +13,7 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 - Zod によるバリデーションスキーマを追加
 - フロントエンドを use client による CSR に修正
 - モジュール構成の最適化に合わせたディレクトリ構成の修正
-- Jest / React Testing Library による単体テストを追加し、GitHub Actions による自動実行を設定
+- Jest / React Testing Library による単体テストを追加し、GitHub Actions による自動実行を設定。Jest用tsconfig(`tsconfig.jest.json`)
 
 ---
 
