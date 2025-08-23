@@ -1,4 +1,4 @@
-import isTodoRow from '../../../api/services/isTodoRow';
+import isTodoRow from '../../../../api/services/isTodoRow';
 
 describe('isTodoRow', () => {
   /**

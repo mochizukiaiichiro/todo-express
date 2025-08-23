@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { errorHandler } from '../../../api/middlewares/errorHandler';
-import { CustomError } from '../../../types/types';
+import { errorHandler } from '../../../../api/middlewares/errorHandler';
+import { CustomError } from '../../../../types/types';
 
 describe('errorHandler', () => {
   let err: CustomError;

@@ -1,5 +1,7 @@
 # 概要
 
+[![Test](https://github.com/mochizukiaiichiro/todo-express/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/mochizukiaiichiro/todo-express/actions/workflows/test-coverage.yml)
+
 Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のために作成したアプリケーションです。『[ハンズオンNode.js](https://www.oreilly.co.jp/books/9784873119236/)』の[ToDo管理アプリケーション](https://github.com/oreilly-japan/hands-on-nodejs/tree/master/ch05)を元に機能の追加や改善、技術の最新化、モジュール構成の最適化などを行っています。
 
 ---
@@ -11,6 +13,7 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 - Zod によるバリデーションスキーマを追加
 - フロントエンドを use client による CSR に修正
 - モジュール構成の最適化に合わせたディレクトリ構成の修正
+- Jest / React Testing Library による単体テストを追加し、GitHub Actions による自動実行を設定
 
 ---
 
@@ -33,12 +36,16 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 ├── hooks/              # カスタムフック
 ├── styles/             # CSS
 ├── types/              # TypeScript型定義 & Zodスキーマ
-└── api/
-      ├── routes/       # Expressルート定義
-      ├── controllers/  # APIの実装ロジック
-      ├── services/     # CRUD処理
-      ├── middlewares/  # バリデーション・エラー処理
-      └── data/         # ToDo管理アプリケーションのデータ
+├── api/
+│    ├── routes/       # Expressルート定義
+│    ├── controllers/  # APIの実装ロジック
+│    ├── services/     # CRUD処理
+│    ├── middlewares/  # バリデーション・エラー処理
+│    └── data/         # ToDo管理アプリケーションのデータ
+└── __tests__/
+      └─unit/            # 単体テスト
+          ├─api/         # バックエンド
+          └─ui/          # フロントエンド
 ```
 
 ---
@@ -61,6 +68,8 @@ Express/Next.js/TypeScriptを用いたWEBアプリケーションの学習のた
 - バリデーション：Zod 4.x
 - 言語／型定義：TypeScript 5.8
 - 実行環境：tsx
+- テスト：jest / React Testing Library / GitHub Actions
+- その他：ESLint / Prettier
 
 ---
 

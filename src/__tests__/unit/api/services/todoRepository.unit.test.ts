@@ -1,6 +1,6 @@
-import isTodoRow from '../../../api/services/isTodoRow';
-import { createTodoDbService } from '../../../api/services/createTodoDbService';
-import { Todo, TodoRepository } from '../../../types/types';
+import isTodoRow from '../../../../api/services/isTodoRow';
+import { createTodoDbService } from '../../../../api/services/createTodoDbService';
+import { Todo, TodoRepository } from '../../../../types/types';
 
 describe('todoDbService', () => {
   let dbs: TodoRepository;

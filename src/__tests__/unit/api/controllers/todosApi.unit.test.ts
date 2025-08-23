@@ -1,11 +1,11 @@
-import { addTodo, deleteTodo, getTodos, updateTodo } from '../../../api/controllers/todosApi';
-import { Todo, TodoRepository, isTodoHandlingRequest } from '../../../types/types';
+import { addTodo, deleteTodo, getTodos, updateTodo } from '../../../../api/controllers/todosApi';
+import { Todo, TodoRepository, isTodoHandlingRequest } from '../../../../types/types';
 import {
   AddTodoRequestType,
   createMockDb,
   createMockRes,
   GetTodosRequestType,
-} from '../../../utils/testUtils';
+} from '../../../../utils/testUtils';
 
 describe('todosApi', () => {
   describe('getTodos()', () => {

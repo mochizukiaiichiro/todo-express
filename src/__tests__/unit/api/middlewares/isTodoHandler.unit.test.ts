@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
-import { isTodoHandlerRequest, Todo, TodoRepository } from '../../../types/types';
-import { createMockDb } from '../../../utils/testUtils';
-import { isTodoHandler } from '../../../api/middlewares/isTodoHandler';
+import { isTodoHandlerRequest, Todo, TodoRepository } from '../../../../types/types';
+import { createMockDb } from '../../../../utils/testUtils';
+import { isTodoHandler } from '../../../../api/middlewares/isTodoHandler';
 
 describe('isTodoHandler ', () => {
   let mockDb: jest.Mocked<TodoRepository>;

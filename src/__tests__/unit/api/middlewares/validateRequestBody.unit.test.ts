@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { validateRequestBody } from '../../../api/middlewares/validateRequestBody';
-import { TodoBody, todoSchema } from '../../../types/types';
+import { validateRequestBody } from '../../../../api/middlewares/validateRequestBody';
+import { TodoBody, todoSchema } from '../../../../types/types';
 
 describe('validateRequestBody', () => {
   let mockReq: Partial<Request>;
