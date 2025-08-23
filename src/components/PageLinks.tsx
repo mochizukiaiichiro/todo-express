@@ -26,7 +26,7 @@ export default function PageLinks({ currentPage }: Props) {
       {Object.entries(pages).map(([key, { title }]) => (
         <Link
           key={key}
-          href={`/${key === 'index' ? '' : key}`}
+          href={key === 'index' ? '/' : `/${key}`}
           className={`${styles.link} ${currentPage === key ? styles.active : ''}`}
         >
           {title}
