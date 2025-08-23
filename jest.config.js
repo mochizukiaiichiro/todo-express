@@ -4,7 +4,7 @@ export default {
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
+    '^.+\\.(ts|tsx)$': ['ts-jest', { tsconfig: 'tsconfig.jest.json' }],
   },
   testMatch: ['<rootDir>/src/**/*.test.{ts,tsx,js,jsx}'],
   coverageDirectory: 'coverage',
@@ -16,4 +16,7 @@ export default {
     '!**/node_modules/**',
     '!**/vendor/**',
   ],
+  moduleNameMapper: {
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+  },
 };
